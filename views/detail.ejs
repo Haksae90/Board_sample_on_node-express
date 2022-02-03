@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>함께 쓰는 항해 블로그</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+        <script src="/api.js"></script>
+
+    <!--font-->
+    <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap" rel="stylesheet">
+</head>
+<style>
+    * {
+        font-family: 'Sunflower', sans-serif;
+        font-size: 13px;
+    }
+
+    .title_warp {
+        height: 200px;
+        background-color: royalblue;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 40px;
+        color: white;
+        padding-top: 70px;
+    }
+
+    .button {
+        float: right;
+        padding-right: 20px;
+        padding-bottom: 10px;
+    }
+
+    .articles {
+        width: 1200px;
+        padding-top: 50px;
+        margin: auto;
+    }
+
+    .comments {
+        width: 600px;
+        padding-top: 50px;
+        margin: auto;
+    }
+
+    .commentInput {
+        width: 600px;
+        margin: auto;
+        padding-top: 50px;
+    }
+
+    .commentButton {
+        text-align: center;
+    }
+</style>
+<script>
+    
+    $(document).ready(function () {
+        showComments();
+    });
+
+    function showComments() {
+        $.ajax({
+            type: "GET",
+            url: "/comments/checkHost/<%=article[0].articleId%>",
+            headers: {
+                authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            data: {},
+            success: function(response){
+                let userNickname = response["userNickname"]
+                let comments = response["comments"];
+                for (let i = 0; i < comments.length; i++) {
+                    let commentId= comments[i]["commentId"]
+                    let nickname = comments[i]["nickname"];
+                    let comment = comments[i]["comment"];
+                    if (userNickname === nickname) {
+                        let temp_html = `<tr>
+                                            <td scope="col">${nickname}</td>
+                                            <td scope="col" id="editCommentText${commentId}">${comment}</td>
+                                            <td scope="col"><button type="button" class="commentButton" id="editCommentButton" onclick="editComment(${commentId})">수정</button>
+                                                <button type="button" class="commentButton" onclick="deleteComment(${commentId})">삭제</button></td>
+                                        </tr>`
+                    $("#commentBox").append(temp_html);
+                    } else {
+                        let temp_html = `<tr>
+                                            <td scope="col">${nickname}</td>
+                                            <td scope="col">${comment}</td>
+                                        </tr>`
+                    $("#commentBox").append(temp_html);
+                    
+                    }
+                }
+            }
+        })
+    };
+
+    function edit() {
+        window.location.replace("/board/edit/<%=article[0].articleId%>")
+    };    
+
+    function home() {
+        window.location.replace("/")
+    }
+
+    function comment(id) {
+        if (!localStorage.getItem("token")) {
+            alert("로그인이 필요합니다.");
+            return window.location.replace("/users/auth");
+        }
+        let comment = $("#comment").val()
+        let articleId = id
+        if (!comment) {
+            return alert("댓글 내용을 입력해주세요.")
+        }
+        $.ajax({
+            type: "POST",
+            url: "/comments/post",
+            headers: {
+                authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            data: { comment, articleId },
+            success: function(response){
+                alert("코멘트가 등록되었습니다");
+                window.location.replace("/board/articles/"+id)
+            }
+        })
+    };
+
+    function editComment(commentId){
+            let temp = $.trim($("#editCommentText"+commentId).text())
+            $("#editCommentText"+commentId).html(`<input type="text" value="${temp}" id = "editing">`);
+            $("#editCommentButton").html(`<button type="button" id = "test1" onclick="editingButton(${commentId})">수정하기</button>`)
+        }
+
+        function editingButton(Id) {
+            let comment = $("#editing").val();
+            $.ajax({
+                type: "PUT",
+                url: "/comments/edit/"+Id,
+                data: { comment },
+                success: function (response) {
+                    alert("댓글이 수정되었습니다.")
+                    window.location.replace("<%=article[0].articleId%>");
+                }
+            })
+        }
+
+    function deleteComment(commentId) {
+        let deleteConfirm = confirm("정말로 삭제하시겠습니까?")
+        if(deleteConfirm===true) {
+        $.ajax({
+            type: "DELETE",
+            url: "/comments/delete/"+commentId,
+            data: {},
+            success: function (response) {
+                alert("댓글이 삭제되었습니다.");
+                window.location.replace("<%=article[0].articleId%>");
+            }
+        })
+    }}
+
+
+
+</script>
+
+<body>
+    <form class="title_warp">
+        <h2 class="title">함께 쓰는 항해 블로그</h2>
+    </form> <br>
+    <div class="button">
+        <button type="button" class="btn btn-primary" onclick="edit()">수정</button>
+        <button type="button" class="btn btn-primary" onclick="home()">돌아가기</button>
+    </div>
+    <section>
+        <div class="articles">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">닉네임</th>
+                        <th scope="col">제목</th>
+                        <th scope="col">내용</th>
+                    </tr>
+                </thead>
+                <tbody id="articleBox">
+                    <tr>
+                        <th scope="col"><%=article[0].nickname%></th>
+                        <th scope="col"><%=article[0].title%></th>
+                        <th scope="col"><%=article[0].content%></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="comments">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">닉네임</th>
+                        <th scope="col">코멘트</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody id="commentBox">
+                </tbody>
+            </table>
+        </div>
+        <div class="commentInput">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">comment</span>
+                </div>
+                <input id="comment" type="text" class="form-control" aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default">
+            </div>
+        </div>
+        <div class="commentButton">
+            <button type="button" class="btn btn-primary" onclick="comment(`<%=article[0].articleId%>`)">코멘트 작성</button>
+        </div>
+    </section>
+</body>
+
+</html>

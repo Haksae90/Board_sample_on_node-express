@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>함께 쓰는 항해 블로그</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <!--font-->
+    <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap" rel="stylesheet">
+</head>
+<style>
+    * {
+        font-family: 'Sunflower', sans-serif;
+        font-size: 13px;
+    }
+
+    .title_warp {
+        height: 200px;
+        background-color: royalblue;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 40px;
+        color: white;
+        padding-top: 70px;
+    }
+
+    .button {
+        float: right;
+        padding-right: 20px;
+        padding-bottom: 10px;
+    }
+
+    .articles {
+        width: 1200px;
+        padding-top: 50px;
+        margin: auto;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        getButton();
+        getArticles();
+    });
+
+    function getButton() {
+        if (localStorage.getItem("token")) {
+            $("#getTwoButton").append(`<button type="button" class="btn btn-primary" onclick="post()">게시글 작성</button><button type="button" class="btn btn-primary" onclick="logout()">로그아웃</button>`)
+        } else {
+            $("#getTwoButton").append(`<button type="button" class="btn btn-primary" onclick="post()">게시글 작성</button><button type="button" class="btn btn-primary" onclick="login()">로그인</button>`)
+        }   
+    }
+
+    function getArticles() {
+        $.ajax({
+            type: "GET",
+            url: "/board/articles",
+            data: {},
+            success: function (response) {
+                let articles = response["articles"];
+                for (let i = 0; i < articles.length; i++) {
+                    let articleId = articles[i]["articleId"];
+                    let nickname = articles[i]["nickname"];
+                    let title = articles[i]["title"];
+                    let temp_html = `<tr>
+                                        <th scope="col">${articleId}</th>
+                                        <th scope="col">${nickname}</th>
+                                        <th scope="col"><a href="/board/articles/${articleId}">${title}</th>
+                                    </tr>`
+                    $("#articleBox").append(temp_html);
+                }
+            }
+        })
+    };
+
+    function post() {
+        window.location.replace("/board/post")
+    };
+
+    function login() {
+        window.location.replace("/users/auth")
+    };
+
+    function logout() {
+        localStorage.clear();
+        window.location.replace("/")
+    };
+
+</script>
+<body>
+    <form class="title_warp">
+        <h2 class="title">함께 쓰는 항해 블로그</h2>
+    </form> <br>
+    <div class="button">
+        <div id="getTwoButton"></div>
+    </div>
+    <section>
+        <div class="articles">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">작성자</th>
+                        <th scope="col">제목</th>
+                    </tr>
+                </thead>
+                <tbody id="articleBox">
+                </tbody>
+            </table>
+        </div>
+    </section>
+</body>
+
+</html>

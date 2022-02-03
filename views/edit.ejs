@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>함께 쓰는 항해 블로그</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="/api.js"></script>
+    <!--font-->
+    <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap" rel="stylesheet">
+</head>
+<style>
+    * {
+        font-family: 'Sunflower', sans-serif;
+        font-size: 13px;
+    }
+
+    .title_warp {
+        height: 200px;
+        background-color: royalblue;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 40px;
+        color: white;
+        padding-top: 70px;
+    }
+
+    .info {
+        font-size: 20px;
+        text-align: center;
+        padding-top: 20px;
+    }
+    .contentForm {
+        width: 370px;
+        margin: auto;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+    .button {
+        text-align: center;
+    }
+</style>
+<script>
+    let user;
+    getSelf(function (u) {
+        user = u;
+    });
+
+    $(document).ready(function () {
+        checkHost();
+    });
+
+    function checkHost() {
+        $.ajax({
+            type: "GET",
+            url: "/board/checkHost/<%=article[0].articleId%>",
+            headers: {
+                authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            data: {},
+            success: function(response){
+                const result = response.result
+                if (result !== true) {
+                    alert("수정 권한이 없습니다.");
+                    window.location.replace("/")
+                }},
+            error: function(error) {
+                alert("수정 권한이 없습니다.");
+                window.location.replace("/")
+            }
+        })
+    };
+
+    function edit(id) {
+        let title = $("#title").val();
+        let content = $("#content").val();
+        $.ajax({
+            type: "PUT",
+            url: "/board/edit/"+id,
+            data: { title, content },
+            success: function (response) {
+                alert("게시글이 수정되었습니다.")
+                window.location.replace("/")
+            }
+        })
+    }
+
+    function deleteArticle(id) {
+        $.ajax({
+            type: "DELETE",
+            url: "/board/delete/"+id,
+            data: {},
+            success: function (response) {
+                alert("게시글이 삭제되었습니다.")
+                window.location.replace("/")
+            }
+        })
+    }
+
+
+    function home() {
+        window.location.replace("/")
+    }
+</script>
+<body>
+    <form class="title_warp">
+        <h2 class="title">함께 쓰는 항해 블로그</h2>
+    </form> <br>
+    <p class="info">📋 게 시 글 수 정</p>
+    <form class="contentForm">
+        <table>
+            <tr>
+                <td>제목</td>
+                <td>
+                    <textarea name="contents" id="title" cols="50" rows="1" placeholder="제목은 간략하고 임팩트있게!" required><%=article[0].title%></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>내용</td>
+                <td>
+                    <textarea name="contents" id="content" cols="50" rows="10" placeholder="쓰고싶은 것을 자유롭게 써주세요!" required><%=article[0].content%></textarea>
+                </td>
+            </tr>
+
+        </table>
+    </form> 
+    <div class="button">
+        <button type="button" class="btn btn-primary" onclick="edit(`<%=article[0].articleId%>`)">게시글 수정</button> 
+        <button type="button" class="btn btn-primary" onclick="deleteArticle(`<%=article[0].articleId%>`)">게시글 삭제</button>
+        <button type="button" class="btn btn-primary" onclick="home()">돌아가기</button>
+    </div>
+
+</html>
