@@ -47,22 +47,26 @@
         text-align: center;
         padding-top: 20px;
     }
+
     .contentForm {
         width: 370px;
         margin: auto;
         padding-top: 40px;
         padding-bottom: 40px;
     }
+
     .button {
         text-align: center;
     }
 </style>
 <script>
+    // 로그인 상태 확인
     let user;
     getSelf(function (u) {
         user = u;
     });
 
+    // 게시글 작성
     function post() {
         let title = $("#title").val()
         let content = $("#content").val()
@@ -71,22 +75,23 @@
             url: "/board/post",
             headers: {
                 authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
+            },
             data: {
                 title,
                 content
             },
-            success: function(response){
+            success: function (response) {
                 alert("게시글이 등록되었습니다");
                 window.location.replace("/")
             }
         })
     };
-
+    // 홈페이지로 돌아가기
     function home() {
         window.location.replace("/")
     }
 </script>
+
 <body>
     <form class="title_warp">
         <h2 class="title">함께 쓰는 항해 블로그</h2>
@@ -97,18 +102,20 @@
             <tr>
                 <td>제목</td>
                 <td>
-                    <textarea name="contents" id="title" cols="50" rows="1" placeholder="제목은 간략하고 임팩트있게!" required></textarea>
+                    <textarea name="contents" id="title" cols="50" rows="1" placeholder="제목은 간략하고 임팩트있게!"
+                        required></textarea>
                 </td>
             </tr>
             <tr>
                 <td>내용</td>
                 <td>
-                    <textarea name="contents" id="content" cols="50" rows="10" placeholder="쓰고싶은 것을 자유롭게 써주세요!" required></textarea>
+                    <textarea name="contents" id="content" cols="50" rows="10" placeholder="쓰고싶은 것을 자유롭게 써주세요!"
+                        required></textarea>
                 </td>
             </tr>
 
         </table>
-    </form> 
+    </form>
     <div class="button">
         <button type="button" class="btn btn-primary" onclick="post()">글 작성</button>
         <button type="button" class="btn btn-primary" onclick="home()">돌아가기</button>

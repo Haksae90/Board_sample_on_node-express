@@ -60,14 +60,16 @@
         getArticles();
     });
 
+    // 로그인한 상태에 따라 버튼 변경
     function getButton() {
         if (localStorage.getItem("token")) {
             $("#getTwoButton").append(`<button type="button" class="btn btn-primary" onclick="post()">게시글 작성</button><button type="button" class="btn btn-primary" onclick="logout()">로그아웃</button>`)
         } else {
             $("#getTwoButton").append(`<button type="button" class="btn btn-primary" onclick="post()">게시글 작성</button><button type="button" class="btn btn-primary" onclick="login()">로그인</button>`)
-        }   
+        }
     }
 
+    // 게시글 불러오기
     function getArticles() {
         $.ajax({
             type: "GET",
@@ -90,20 +92,24 @@
         })
     };
 
+    // 게시글 작성으로 이동
     function post() {
         window.location.replace("/board/post")
     };
 
+    // 로그인 페이지로 이동
     function login() {
         window.location.replace("/users/auth")
     };
 
+    // 로그아웃
     function logout() {
         localStorage.clear();
         window.location.replace("/")
     };
 
 </script>
+
 <body>
     <form class="title_warp">
         <h2 class="title">함께 쓰는 항해 블로그</h2>

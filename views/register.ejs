@@ -41,22 +41,26 @@
         color: white;
         padding-top: 70px;
     }
+
     .info {
         font-size: 20px;
         text-align: center;
         padding-top: 20px;
     }
+
     .userForm {
         width: 250px;
         margin: auto;
         padding-top: 40px;
-        padding-bottom: 40px; 
+        padding-bottom: 40px;
     }
+
     .button {
         text-align: center;
     }
 </style>
 <script>
+    // 회원 가입
     function register() {
         const nickname = $("#nickname").val();
         const password = $("#password").val();
@@ -78,16 +82,17 @@
             }
         })
     };
-
-    function home(){
+    // 홈페이지로 돌아가기
+    function home() {
         window.location.replace("/")
     };
 </script>
+
 <body>
     <form class="title_warp">
         <h2 class="title">함께 쓰는 항해 블로그</h2>
     </form> <br>
-    <p class="info">🙌🏻  회 원 가 입</p>
+    <p class="info">🙌🏻 회 원 가 입</p>
     <form class="userForm">
         <table>
             <tr>
