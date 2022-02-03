@@ -1,4 +1,4 @@
-# Node.js & Express 블로그 업그레이드 버전 만들기
+# Node.js & Express 블로그 만들기 V_2 (기능 및 코드  추가)
 
 ## 📋서비스 관련
 
