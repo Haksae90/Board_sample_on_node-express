@@ -20,10 +20,9 @@ router.post("/post", authMiddleware, async (req, res) => {
     res.json({ success: true });
 });
 
-// 비회원 코멘트 불러오기
+// 코멘트 불러오기 (비회원시)
 router.get("/checkHost/notusers/:articleId", async (req, res) => {
     try {
-        console.log("2차")
         const { params: { articleId }, } = req;
         const comments = await Comments.find({ articleId }).sort("-commentId").exec();
         res.json({ comments });
@@ -36,7 +35,6 @@ router.get("/checkHost/notusers/:articleId", async (req, res) => {
 // 코멘트 불러오기
 router.get("/checkHost/:articleId", authMiddleware, async (req, res) => {
     try {
-        console.log("2차")
         const { params: { articleId }, } = req;
         const comments = await Comments.find({ articleId }).sort("-commentId").exec();
         const userNickname = res.locals["user"]["nickname"]

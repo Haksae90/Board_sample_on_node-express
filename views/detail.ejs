@@ -79,9 +79,7 @@
 
     // 코멘트 불러오기 / 회원, 비회원 구분 / 본인이 작성한 코멘트는 수정 삭제 버튼 생성
     function showComments() {
-        console.log("0차")
         if(!localStorage.length) {
-            console.log("1차")
             $.ajax({
             type: "GET",
             url: "/comments/checkHost/notusers/<%=article[0].articleId%>",
@@ -94,9 +92,9 @@
                     let comment = comments[i]["comment"];
 
                     let temp_html = `<tr>
-                                            <td scope="col">${nickname}</td>
-                                            <td scope="col">${comment}</td>
-                                        </tr>`
+                                        <td scope="col">${nickname}</td>
+                                        <td scope="col">${comment}</td>
+                                    </tr>`
                         $("#commentBox").append(temp_html);
                     }
                 }
