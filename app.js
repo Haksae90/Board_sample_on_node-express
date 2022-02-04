@@ -9,8 +9,8 @@ const boardRouter = require('./routes/board');
 const commentsRouter = require('./routes/comments');
 
 const requestMiddleware = (req, res, next) => {
-    console.log('Request URL:', req.originalUrl, ' - ', new Date());
-    next();
+  console.log('Request URL:', req.originalUrl, ' - ', new Date());
+  next();
 };
 
 app.use(express.json());
@@ -31,25 +31,25 @@ app.use('/comments', [commentsRouter]);
 
 // 전체 목록(home) 페이지 연결
 app.get('/', (req, res) => {
-    res.render('board');
+  res.render('board');
 });
 
 // 로그인 페이지 연결
 app.get('/users/auth', (req, res) => {
-    res.render('auth');
+  res.render('auth');
 });
 
 // 회원가입 페이지 연결
 app.get('/users/register', (req, res) => {
-    res.render('register');
+  res.render('register');
 });
 
 // 글쓰기 페이지 연결
 app.get('/board/post', (req, res) => {
-    res.render('post');
+  res.render('post');
 });
 
 // 콘솔창에 이 포트로 서버가 켜졌다고 알려줌
 app.listen(port, () => {
-    console.log(port, '포트로 서버가 켜졌습니다.');
+  console.log(port, '포트로 서버가 켜졌습니다.');
 });
