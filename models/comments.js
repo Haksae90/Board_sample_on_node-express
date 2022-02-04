@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const commentsSchema = mongoose.Schema({
     articleId: {
@@ -14,10 +14,9 @@ const commentsSchema = mongoose.Schema({
         required: true,
     },
     comment: {
-        type:String,
+        type: String,
         required: true,
-
     },
 });
 
-module.exports = mongoose.model("comments", commentsSchema)
+module.exports = mongoose.model('comments', commentsSchema);

@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose');
 
 const articlesSchema = mongoose.Schema({
     articleId: {
@@ -16,7 +16,7 @@ const articlesSchema = mongoose.Schema({
     content: {
         type: String,
         required: true,
-    }
+    },
 });
 
-module.exports = mongoose.model("articles", articlesSchema)
+module.exports = mongoose.model('articles', articlesSchema);
