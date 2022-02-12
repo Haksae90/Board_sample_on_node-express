@@ -1,6 +1,7 @@
 const Users = require('../models/users');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
+const { tokenKey } = require('../token');
 
 // 회원가입 Joi
 const joinUsersSchema = Joi.object({
@@ -61,7 +62,7 @@ const login = async (req, res) => {
       });
       return;
     }
-    const token = jwt.sign({ userId: user.userId }, 'haksae-key');
+    const token = jwt.sign({ userId: user.userId }, tokenKey);
     res.send({
       token,
     });
