@@ -58,6 +58,7 @@
     }
 </style>
 <script>
+    // 로그인 상태 확인
     let user;
     getSelf(function (u) {
         user = u;
@@ -67,6 +68,7 @@
         checkHost();
     });
 
+    // 로그인한 유저와 글을 쓴 유저가 동일한지 확인
     function checkHost() {
         $.ajax({
             type: "GET",
@@ -88,12 +90,13 @@
         })
     };
 
-    function edit(id) {
+    // 수정
+    function edit(articleid) {
         let title = $("#title").val();
         let content = $("#content").val();
         $.ajax({
             type: "PUT",
-            url: "/board/edit/"+id,
+            url: "/board/edit/"+articleid,
             data: { title, content },
             success: function (response) {
                 alert("게시글이 수정되었습니다.")
@@ -101,11 +104,11 @@
             }
         })
     }
-
-    function deleteArticle(id) {
+    // 삭제
+    function deleteArticle(articleid) {
         $.ajax({
             type: "DELETE",
-            url: "/board/delete/"+id,
+            url: "/board/delete/"+articleid,
             data: {},
             success: function (response) {
                 alert("게시글이 삭제되었습니다.")
@@ -114,10 +117,11 @@
         })
     }
 
-
+    // 홈으로 이동
     function home() {
         window.location.replace("/")
     }
+
 </script>
 <body>
     <form class="title_warp">

@@ -60,7 +60,7 @@ const editPage = async (req, res) => {
   }
 };
 
-// 게시글 작성자 확인
+// 게시글 작성자와 로그인한 유저가 동일한지 확인 (수정페이지)
 const checkHost = async (req, res) => {
   try {
     const {

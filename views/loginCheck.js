@@ -1,4 +1,4 @@
-// 로그인 확인 api
+// 로그인 상태를 확인하는 api (단순히 로그인 상태만 확인한다)
 
 function getSelf(callback) {
   $.ajax({
