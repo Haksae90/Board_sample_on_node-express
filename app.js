@@ -25,28 +25,13 @@ app.set('view engine', 'ejs');
 app.use(express.static('./views'));
 
 // 라우터 연결 연결
-app.use('/board', [boardRouter]);
-app.use('/users', [usersRouter]);
-app.use('/comments', [commentsRouter]);
+app.use('/board', boardRouter);
+app.use('/users', usersRouter);
+app.use('/comments', commentsRouter);
 
 // 전체 목록(home) 페이지 연결
 app.get('/', (req, res) => {
   res.render('board');
-});
-
-// 로그인 페이지 연결
-app.get('/users/auth', (req, res) => {
-  res.render('auth');
-});
-
-// 회원가입 페이지 연결
-app.get('/users/register', (req, res) => {
-  res.render('register');
-});
-
-// 글쓰기 페이지 연결
-app.get('/board/post', (req, res) => {
-  res.render('post');
 });
 
 // 콘솔창에 이 포트로 서버가 켜졌다고 알려줌

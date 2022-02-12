@@ -3,7 +3,7 @@
 function getSelf(callback) {
   $.ajax({
     type: 'GET',
-    url: '/users/me',
+    url: '/users/auth',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
     },
@@ -18,7 +18,7 @@ function getSelf(callback) {
         localStorage.clear();
         alert('알 수 없는 문제가 발생했습니다. 관리자에게 문의하세요.');
       }
-      window.location.replace('/users/auth');
+      window.location.replace('/users/login');
     },
   });
 }

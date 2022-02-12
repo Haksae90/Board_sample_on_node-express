@@ -20,7 +20,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <script src="/api.js"></script>
+    <script src="/loginCheck.js"></script>
     <!--font-->
     <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap" rel="stylesheet">
 </head>
@@ -74,7 +74,7 @@
         const password = $("#password").val();
         $.ajax({
             type: "POST",
-            url: "/users/auth",
+            url: "/users/login",
             data: {
                 nickname: nickname,
                 password: password,
@@ -89,8 +89,8 @@
         });
     };
     // 회원가입으로 이동
-    function register() {
-        window.location.replace("/users/register")
+    function join() {
+        window.location.replace("/users/join")
     };
 </script>
 
@@ -113,7 +113,7 @@
     </form>
     <div class="button">
         <button type="button" class="btn btn-primary" onclick="login()">로그인</button>
-        <button type="button" class="btn btn-primary" onclick="register()">회원가입</button>
+        <button type="button" class="btn btn-primary" onclick="join()">회원가입</button>
     </div>
 
 </html>

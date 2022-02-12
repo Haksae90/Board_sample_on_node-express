@@ -61,13 +61,13 @@
 </style>
 <script>
     // 회원 가입
-    function register() {
+    function join() {
         const nickname = $("#nickname").val();
         const password = $("#password").val();
         const confirmPassword = $("#confirmPassword").val();
         $.ajax({
             type: "POST",
-            url: "/users/register",
+            url: "/users/join",
             data: {
                 nickname: nickname,
                 password: password,
@@ -75,7 +75,7 @@
             },
             success: function (response) {
                 alert("회원 가입이 완료되었습니다.")
-                window.location.replace("/users/auth")
+                window.location.replace("/users/login")
             },
             error: function (error) {
                 alert(error.responseJSON.errorMessage)
@@ -111,7 +111,7 @@
         </table>
     </form>
     <div class="button">
-        <button type="button" class="btn btn-primary" onclick="register()">회원가입</button>
+        <button type="button" class="btn btn-primary" onclick="join()">회원가입</button>
         <button type="button" class="btn btn-primary" onclick="home()">홈으로 돌아가기</button>
     </div>
 
