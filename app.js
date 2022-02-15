@@ -1,7 +1,9 @@
 const express = require('express');
 const connect = require('./models');
 const app = express();
-const port = 3000;
+const cors = require('cors');
+require('dotenv').config()
+const port = process.env.PORT || 3000;
 connect();
 
 const usersRouter = require('./routes/users');
@@ -16,6 +18,7 @@ const requestMiddleware = (req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(requestMiddleware);
+app.use(cors());
 
 // ejs view engine
 app.set('views', __dirname + '/views');
