@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const Users = require('../models/users');
-const { tokenKey } = require('../token');
 
 module.exports = (req, res, next) => {
   // authoriztion 참조
