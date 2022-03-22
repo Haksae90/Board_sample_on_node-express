@@ -17,9 +17,11 @@
     "express": "^4.17.2",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.1.8"
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.17.0"
   },
   "devDependencies": {
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "sequelize-cli": "^6.4.1"
   }
 }

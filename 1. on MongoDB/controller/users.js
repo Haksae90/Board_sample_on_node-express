@@ -53,7 +53,7 @@ const authUsersSchema = Joi.object({
 const login = async (req, res) => {
   try {
     const { nickname, password } = req.body;
-    const user = await Users.findOne({ nickname, password });
+    const user = await Users.findOne({ nickname });
 
     if (!user) {
       res.status(400).send({
@@ -61,9 +61,19 @@ const login = async (req, res) => {
       });
       return;
     }
-    const token = jwt.sign({ userId: user.userId }, process.env.TOKENKEY);
-    res.send({
-      token,
+    user.checkPassword(password, (err, isMatch) => {
+      // 입력한 비밀번호와 암호화한 비밀번호가 동일한지 체크
+      if (!isMatch)
+        return res
+          .status(400)
+          .json({ ok: false, message: '아이디 혹은 비밀번호를 확인해주세요' });
+
+      const token = jwt.sign({ userId: user.userId }, process.env.TOKENKEY);
+      res.json({
+        token,
+        ok: true,
+        message: '로그인 성공',
+      });
     });
   } catch (err) {
     console.log(err);

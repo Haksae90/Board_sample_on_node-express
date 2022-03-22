@@ -1,6 +1,7 @@
-const Users = require('../models/users');
+const { Users } = require('../models')
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
+const crypto = require("crypto");
 
 // 회원가입 Joi
 const joinUsersSchema = Joi.object({
@@ -20,8 +21,8 @@ const join = async (req, res) => {
       });
       return;
     }
-    const existUsers = await Users.find({ nickname });
-    if (existUsers.length) {
+    const existUsers = await Users.findOne({ where: { nickname } });
+    if (existUsers) {
       res.status(400).send({
         errorMessage: '이미 가입된 닉네임입니다.',
       });
@@ -33,8 +34,15 @@ const join = async (req, res) => {
       });
       return;
     }
-    const user = new Users({ nickname, password });
-    await user.save();
+    const cryptoPass = crypto
+    .createHash("sha512")
+    .update(password)
+    .digest("base64");
+
+    await Users.create({ 
+      nickname,
+      password: cryptoPass
+    });
     res.status(201).send({});
   } catch (err) {
     console.log(err);
@@ -53,7 +61,11 @@ const authUsersSchema = Joi.object({
 const login = async (req, res) => {
   try {
     const { nickname, password } = req.body;
-    const user = await Users.findOne({ nickname, password });
+    const cryptoPass = crypto.createHash('sha512').update(password).digest('base64');
+
+    const user = await Users.findOne({ 
+      where: { nickname, password: cryptoPass },
+     });
 
     if (!user) {
       res.status(400).send({
@@ -62,7 +74,7 @@ const login = async (req, res) => {
       return;
     }
     const token = jwt.sign({ userId: user.userId }, process.env.TOKENKEY);
-    res.send({
+    res.json({
       token,
     });
   } catch (err) {
@@ -75,10 +87,10 @@ const login = async (req, res) => {
 
 // 로그인 인증
 const auth = async (req, res) => {
-  const { user } = res.locals;
+  const { userId } = res.locals;
   res.send({
     user: {
-      nickname: user.nickname,
+      userId,
     },
   });
 };

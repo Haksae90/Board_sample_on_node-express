@@ -82,7 +82,7 @@
         if(!localStorage.length) {
             $.ajax({
             type: "GET",
-            url: "/comments/checkHost/notusers/<%=article[0].articleId%>",
+            url: "/comments/checkHost/notusers/<%=article.articleId%>",
             data: {},
             success: function (response) {
                 let comments = response["comments"];
@@ -102,7 +102,7 @@
         } else {
         $.ajax({
             type: "GET",
-            url: "/comments/checkHost/<%=article[0].articleId%>",
+            url: "/comments/checkHost/<%=article.articleId%>",
             headers: {
                 authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -137,7 +137,7 @@
 
     // 수정 페이지로 이동
     function edit() {
-        window.location.replace("/board/edit/<%=article[0].articleId%>")
+        window.location.replace("/board/edit/<%=article.articleId%>")
     };
 
     // 홈페이지로 이동
@@ -186,7 +186,7 @@
             data: { comment },
             success: function (response) {
                 alert("댓글이 수정되었습니다.")
-                window.location.replace("<%=article[0].articleId%>");
+                window.location.replace("<%=article.articleId%>");
             }
         })
     }
@@ -201,7 +201,7 @@
                 data: {},
                 success: function (response) {
                     alert("댓글이 삭제되었습니다.");
-                    window.location.replace("<%=article[0].articleId%>");
+                    window.location.replace("<%=article.articleId%>");
                 }
             })
         }
@@ -232,13 +232,13 @@
                 <tbody id="articleBox">
                     <tr>
                         <th scope="col">
-                            <%=article[0].nickname%>
+                            <%=article["User.nickname"]%>
                         </th>
                         <th scope="col">
-                            <%=article[0].title%>
+                            <%=article.title%>
                         </th>
                         <th scope="col">
-                            <%=article[0].content%>
+                            <%=article.content%>
                         </th>
                     </tr>
                 </tbody>
@@ -267,7 +267,7 @@
             </div>
         </div>
         <div class="commentButton">
-            <button type="button" class="btn btn-primary" onclick="comment(`<%=article[0].articleId%>`)">코멘트 작성</button>
+            <button type="button" class="btn btn-primary" onclick="comment(`<%=article.articleId%>`)">코멘트 작성</button>
         </div>
     </section>
 </body>

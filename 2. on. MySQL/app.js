@@ -1,10 +1,17 @@
 const express = require('express');
-const connect = require('./models');
 const app = express();
 const cors = require('cors');
 require('dotenv').config()
 const port = process.env.PORT || 3000;
-connect();
+const { sequelize } = require('./models');
+
+sequelize.sync({force: false})
+    .then(()=>{
+        console.log("DB Connected Success");
+    })
+    .catch((err)=> {
+        console.error(err);
+    });
 
 const usersRouter = require('./routes/users');
 const boardRouter = require('./routes/board');
