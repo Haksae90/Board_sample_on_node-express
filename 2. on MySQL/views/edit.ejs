@@ -72,7 +72,7 @@
     function checkHost() {
         $.ajax({
             type: "GET",
-            url: "/board/checkHost/<%=article.articleId%>",
+            url: "/board/checkHost/<%=article[0].articleId%>",
             headers: {
                 authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
@@ -133,21 +133,21 @@
             <tr>
                 <td>제목</td>
                 <td>
-                    <textarea name="contents" id="title" cols="50" rows="1" placeholder="제목은 간략하고 임팩트있게!" required><%=article.title%></textarea>
+                    <textarea name="contents" id="title" cols="50" rows="1" placeholder="제목은 간략하고 임팩트있게!" required><%=article[0].title%></textarea>
                 </td>
             </tr>
             <tr>
                 <td>내용</td>
                 <td>
-                    <textarea name="contents" id="content" cols="50" rows="10" placeholder="쓰고싶은 것을 자유롭게 써주세요!" required><%=article.content%></textarea>
+                    <textarea name="contents" id="content" cols="50" rows="10" placeholder="쓰고싶은 것을 자유롭게 써주세요!" required><%=article[0].content%></textarea>
                 </td>
             </tr>
 
         </table>
     </form> 
     <div class="button">
-        <button type="button" class="btn btn-primary" onclick="edit(`<%=article.articleId%>`)">게시글 수정</button> 
-        <button type="button" class="btn btn-primary" onclick="deleteArticle(`<%=article.articleId%>`)">게시글 삭제</button>
+        <button type="button" class="btn btn-primary" onclick="edit(`<%=article[0].articleId%>`)">게시글 수정</button> 
+        <button type="button" class="btn btn-primary" onclick="deleteArticle(`<%=article[0].articleId%>`)">게시글 삭제</button>
         <button type="button" class="btn btn-primary" onclick="home()">돌아가기</button>
     </div>
 

@@ -1,5 +1,3 @@
-const { Users, Articles } = require('../models')
-
 // 게시글 전체 목록 조회
 const getAllArticles = async (req, res) => {
   try {

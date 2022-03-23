@@ -1,5 +1,3 @@
-const { Users, Comments } = require('../models');
-
 // 코멘트 작성
 const postComment = async (req, res) => {
   const { articleId, comment } = req.body;

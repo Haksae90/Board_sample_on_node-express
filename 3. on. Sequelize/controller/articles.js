@@ -1,16 +1,17 @@
 const { Users, Articles } = require('../models')
+const sequilize = require('sequelize')
 
 // 게시글 전체 목록 조회
 const getAllArticles = async (req, res) => {
   try {
     const articles = await Articles.findAll({
-      attributes: [ 'articleId', 'title' ],
+      attributes: [ 'articleId', 'title', [sequilize.col('User.nickname'), 'nickname']] ,
       include: [
         { model: Users, attributes: ["nickname"]}
       ],
       order: [['articleId', 'DESC']],
-      raw: true	
     });
+    console.log(articles)
     res.json({
       articles,
     });

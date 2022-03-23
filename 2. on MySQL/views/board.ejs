@@ -79,7 +79,7 @@
                 let articles = response["articles"];
                 for (let i = 0; i < articles.length; i++) {
                     let articleId = articles[i]["articleId"];
-                    let nickname = articles[i]["User.nickname"];
+                    let nickname = articles[i]["nickname"];
                     let title = articles[i]["title"];
                     let temp_html = `<tr>
                                         <th scope="col">${articleId}</th>

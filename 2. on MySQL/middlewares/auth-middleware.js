@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const { Users } = require('../models')
 
 module.exports = async (req, res, next) => {
   // authoriztion 참조
