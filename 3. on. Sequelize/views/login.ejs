@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>함께 쓰는 항해 블로그</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="/loginCheck.js"></script>
+    <!--font-->
+    <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap" rel="stylesheet">
+</head>
+<style>
+    * {
+        font-family: 'Sunflower', sans-serif;
+        font-size: 13px;
+    }
+
+    .title_warp {
+        height: 200px;
+        background-color: royalblue;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 40px;
+        color: white;
+        padding-top: 70px;
+    }
+
+    .info {
+        font-size: 20px;
+        text-align: center;
+        padding-top: 20px;
+    }
+
+    .userForm {
+        width: 200px;
+        margin: auto;
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
+
+    .button {
+        text-align: center;
+    }
+</style>
+<script>
+    // 로그인 확인
+    if (localStorage.getItem("token")) {
+        getSelf(function () {
+            alert("이미 로그인이 되어있습니다.");
+            window.location.replace("/")
+        })
+    }
+
+    // 로그인 
+    function login() {
+        const nickname = $("#nickname").val();
+        const password = $("#password").val();
+        $.ajax({
+            type: "POST",
+            url: "/users/login",
+            data: {
+                nickname: nickname,
+                password: password,
+            },
+            success: function (response) {
+                localStorage.setItem("token", response.token);
+                window.location.replace("/");
+            },
+            error: function (error) {
+                alert(error.responseJSON.errorMessage);
+            }
+        });
+    };
+    // 회원가입 페이지로 이동
+    function join() {
+        window.location.replace("/users/join")
+    };
+</script>
+
+<body>
+    <form class="title_warp">
+        <h2 class="title">함께 쓰는 항해 블로그</h2>
+    </form> <br>
+    <p class="info">👉🏻 로 그 인</p>
+    <form class="userForm">
+        <table>
+            <tr>
+                <td>닉네임</td>
+                <td><input type="text" name="nickname" id="nickname" placeholder="닉네임" required /></td>
+            </tr>
+            <tr>
+                <td>비밀번호</td>
+                <td><input type="password" name="password" id="password" placeholder="비밀번호" required /></td>
+            </tr>
+        </table>
+    </form>
+    <div class="button">
+        <button type="button" class="btn btn-primary" onclick="login()">로그인</button>
+        <button type="button" class="btn btn-primary" onclick="join()">회원가입</button>
+    </div>
+
+</html>

@@ -28,16 +28,8 @@ const getArticle = async (req, res) => {
 // 게시글 작성
 const postArticle = async (req, res) => {
   const { title, content } = req.body;
-  const articlesIdMax = await Articles.findOne().sort('-articleId').exec();
-  let articleId = 1;
-
-  if (articlesIdMax) {
-    articleId = Number(articlesIdMax.articleId) + 1;
-  }
-
   const nickname = res.locals['user']['nickname'];
   await Articles.create({
-    articleId,
     nickname,
     title,
     content,

@@ -47,12 +47,14 @@
         text-align: center;
         padding-top: 20px;
     }
+
     .contentForm {
         width: 370px;
         margin: auto;
         padding-top: 40px;
         padding-bottom: 40px;
     }
+
     .button {
         text-align: center;
     }
@@ -64,90 +66,58 @@
         user = u;
     });
 
-    $(document).ready(function () {
-        checkHost();
-    });
-
-    // 로그인한 유저와 글을 쓴 유저가 동일한지 확인
-    function checkHost() {
+    // 게시글 작성
+    function post() {
+        let title = $("#title").val()
+        let content = $("#content").val()
         $.ajax({
-            type: "GET",
-            url: "/board/checkHost/<%=article.articleId%>",
+            type: "POST",
+            url: "/board/post",
             headers: {
                 authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            data: {},
-            success: function(response){
-                const result = response.result
-                if (result !== true) {
-                    alert("수정 권한이 없습니다.");
-                    window.location.replace("/")
-                }},
-            error: function(error) {
-                alert("수정 권한이 없습니다.");
+            },
+            data: {
+                title,
+                content
+            },
+            success: function (response) {
+                alert("게시글이 등록되었습니다");
                 window.location.replace("/")
             }
         })
     };
-
-    // 수정
-    function edit(articleid) {
-        let title = $("#title").val();
-        let content = $("#content").val();
-        $.ajax({
-            type: "PUT",
-            url: "/board/edit/"+articleid,
-            data: { title, content },
-            success: function (response) {
-                alert("게시글이 수정되었습니다.")
-                window.location.replace("/")
-            }
-        })
-    }
-    // 삭제
-    function deleteArticle(articleid) {
-        $.ajax({
-            type: "DELETE",
-            url: "/board/delete/"+articleid,
-            data: {},
-            success: function (response) {
-                alert("게시글이 삭제되었습니다.")
-                window.location.replace("/")
-            }
-        })
-    }
-
-    // 홈으로 이동
+    // 홈페이지로 돌아가기
     function home() {
         window.location.replace("/")
     }
-
 </script>
+
 <body>
     <form class="title_warp">
         <h2 class="title">함께 쓰는 항해 블로그</h2>
     </form> <br>
-    <p class="info">📋 게 시 글 수 정</p>
+    <p class="info">📋 게 시 글 작 성</p>
     <form class="contentForm">
         <table>
             <tr>
                 <td>제목</td>
                 <td>
-                    <textarea name="contents" id="title" cols="50" rows="1" placeholder="제목은 간략하고 임팩트있게!" required><%=article.title%></textarea>
+                    <textarea name="contents" id="title" cols="50" rows="1" placeholder="제목은 간략하고 임팩트있게!"
+                        required></textarea>
                 </td>
             </tr>
             <tr>
                 <td>내용</td>
                 <td>
-                    <textarea name="contents" id="content" cols="50" rows="10" placeholder="쓰고싶은 것을 자유롭게 써주세요!" required><%=article.content%></textarea>
+                    <textarea name="contents" id="content" cols="50" rows="10" placeholder="쓰고싶은 것을 자유롭게 써주세요!"
+                        required></textarea>
                 </td>
             </tr>
 
         </table>
-    </form> 
+    </form>
     <div class="button">
-        <button type="button" class="btn btn-primary" onclick="edit(`<%=article.articleId%>`)">게시글 수정</button> 
-        <button type="button" class="btn btn-primary" onclick="deleteArticle(`<%=article.articleId%>`)">게시글 삭제</button>
+        <button type="button" class="btn btn-primary" onclick="post()">글 작성</button>
         <button type="button" class="btn btn-primary" onclick="home()">돌아가기</button>
     </div>
 

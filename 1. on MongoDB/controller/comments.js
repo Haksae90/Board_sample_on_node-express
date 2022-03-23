@@ -3,17 +3,10 @@ const Comments = require('../models/comments');
 // 코멘트 작성
 const postComment = async (req, res) => {
   const { articleId, comment } = req.body;
-  const commentIdMax = await Comments.findOne().sort('-commentId').exec();
-  let commentId = 1;
-
-  if (commentIdMax) {
-    commentId = Number(commentIdMax.commentId) + 1;
-  }
 
   const nickname = res.locals['user']['nickname'];
   await Comments.create({
     articleId,
-    commentId,
     nickname,
     comment,
   });
@@ -23,9 +16,7 @@ const postComment = async (req, res) => {
 // 코멘트 불러오기 (비회원시)
 const getCommentsNonAuth = async (req, res) => {
   try {
-    const {
-      params: { articleId },
-    } = req;
+    const { articleId } = req.params;
     const comments = await Comments.find({ articleId })
       .sort('-commentId')
       .exec();
@@ -38,9 +29,7 @@ const getCommentsNonAuth = async (req, res) => {
 // 코멘트 불러오기
 const getCommentsAuth = async (req, res) => {
   try {
-    const {
-      params: { articleId },
-    } = req;
+    const { articleId } = req.params;
     const comments = await Comments.find({ articleId })
       .sort('-commentId')
       .exec();

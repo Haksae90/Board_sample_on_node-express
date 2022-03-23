@@ -1,10 +1,7 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const articlesSchema = mongoose.Schema({
-  articleId: {
-    type: Number,
-    required: true,
-  },
   nickname: {
     type: String,
     required: true,
@@ -18,5 +15,7 @@ const articlesSchema = mongoose.Schema({
     required: true,
   },
 });
+
+articlesSchema.plugin(AutoIncrement, { inc_field: 'articleId' });
 
 module.exports = mongoose.model('articles', articlesSchema);
