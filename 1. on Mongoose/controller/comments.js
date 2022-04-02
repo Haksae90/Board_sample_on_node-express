@@ -37,7 +37,7 @@ const getCommentsAuth = async (req, res) => {
     const comments = await Comments.find({ articleId })
       .sort('-commentId')
       .exec();
-    const userNickname = res.locals['user']['nickname'];
+    const userNickname = res.locals.user.nickname;
     res.status(200).json({ comments, userNickname });
   } catch (err) {
     console.error(err);
