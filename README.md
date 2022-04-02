@@ -1,7 +1,7 @@
 # 게시판 만들기 샘플 on node&express
 
-Node.js & Express을 사용하여 게시판을 만들었습니다.
-연습할겸 저와 비슷한 초보자 분들을 위해, DB는 Mongoose(MongoDB), SQL, Sequelize를 사용하였습니다.
+Node.js & Express을 사용하여 게시판을 만들었습니다.<br>
+연습할겸 저와 비슷한 초보자 분들을 위해, DB는 Mongoose(MongoDB), SQL, Sequelize를 사용하였습니다.<br>
 약간의 도움이나마 되었으면 좋겠습니다.
 
 🔨 Tech Stack
