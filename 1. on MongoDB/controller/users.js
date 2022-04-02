@@ -15,30 +15,30 @@ const join = async (req, res) => {
     const { nickname, password, confirmPassword } =
       await joinUsersSchema.validateAsync(req.body);
     if (password !== confirmPassword) {
-      res.status(400).send({
+      res.status(400).json({
         errorMessage: '패스워드가 확인란과 동일하지 않습니다.',
       });
       return;
     }
     const existUsers = await Users.find({ nickname });
     if (existUsers.length) {
-      res.status(400).send({
+      res.status(400).json({
         errorMessage: '이미 가입된 닉네임입니다.',
       });
       return;
     }
     if (password.includes(nickname)) {
-      res.status(400).send({
+      res.status(400).json({
         errorMessage: '비밀번호에 닉네임이 포함되어 있습니다.',
       });
       return;
     }
     const user = new Users({ nickname, password });
     await user.save();
-    res.status(201).send({});
+    res.status(201).json({ message: '회원가입이 완료되었습니다' });
   } catch (err) {
-    console.log(err);
-    res.status(400).send({
+    console.error(err);
+    res.status(400).json({
       errorMessage: '요청한 데이터 형식이 올바르지 않습니다.',
     });
   }
@@ -52,11 +52,13 @@ const authUsersSchema = Joi.object({
 
 const login = async (req, res) => {
   try {
-    const { nickname, password } = await authUsersSchema.validateAsync(req.body);
+    const { nickname, password } = await authUsersSchema.validateAsync(
+      req.body
+    );
     const user = await Users.findOne({ nickname });
 
     if (!user) {
-      res.status(400).send({
+      res.status(400).json({
         errorMessage: '닉네임 또는 패스워드를 확인해주세요.',
       });
       return;
@@ -69,15 +71,15 @@ const login = async (req, res) => {
           .json({ ok: false, message: '아이디 혹은 비밀번호를 확인해주세요' });
 
       const token = jwt.sign({ userId: user.userId }, process.env.TOKENKEY);
-      res.json({
+      res.status(200).json({
         token,
         ok: true,
         message: '로그인 성공',
       });
     });
   } catch (err) {
-    console.log(err);
-    res.status(400).send({
+    console.error(err);
+    res.status(400).json({
       errorMessage: '요청한 데이터 형식이 올바르지 않습니다.',
     });
   }
@@ -86,7 +88,7 @@ const login = async (req, res) => {
 // 로그인 인증
 const auth = async (req, res) => {
   const { user } = res.locals;
-  res.send({
+  res.json({
     user: {
       nickname: user.nickname,
     },

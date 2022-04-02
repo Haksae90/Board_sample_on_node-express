@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-require('dotenv').config()
+require('dotenv').config();
 const port = process.env.PORT;
-const mysql = require('mysql2/promise')
+const mysql = require('mysql2/promise');
 
 const usersRouter = require('./routes/users');
 const boardRouter = require('./routes/board');
@@ -13,10 +13,10 @@ let pool = mysql.createPool({
   host: process.env.mysql_host,
   user: process.env.mysql_user,
   password: process.env.mysql_password,
-  database: process.env.mysql_database
-})
+  database: process.env.mysql_database,
+});
 
-app.set('pool', pool)
+app.set('pool', pool);
 
 const requestMiddleware = (req, res, next) => {
   console.log('Request URL:', req.originalUrl, ' - ', new Date());

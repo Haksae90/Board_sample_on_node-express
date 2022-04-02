@@ -1,16 +1,16 @@
 const mysql = require('mysql2/promise');
-require('dotenv').config()
+require('dotenv').config();
 
 async function main() {
-    let connection = await mysql.createConnection({
-        host: process.env.mysql_host,
-        user: process.env.mysql_user,
-        password: process.env.mysql_password,
-    })
+  let connection = await mysql.createConnection({
+    host: process.env.mysql_host,
+    user: process.env.mysql_user,
+    password: process.env.mysql_password,
+  });
 
-    await connection.query(`USE ${process.env.mysql_database}`)
+  await connection.query(`USE ${process.env.mysql_database}`);
 
-    await connection.query(`
+  await connection.query(`
     CREATE TABLE Comments(
         userId INT NOT NULL,
         FOREIGN KEY(userId) REFERENCES Users(userId) ON UPDATE CASCADE, 
@@ -22,10 +22,9 @@ async function main() {
         createdAt DATETIME NOT NULL,
         updatedAt DATETIME NOT NULL
     )
-    `)
+    `);
 
-    await connection.end()
-
+  await connection.end();
 }
 
-main()
+main();

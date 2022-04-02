@@ -2,7 +2,7 @@ const express = require('express');
 const connect = require('./models');
 const app = express();
 const cors = require('cors');
-require('dotenv').config()
+require('dotenv').config();
 const port = process.env.PORT;
 connect();
 
@@ -11,14 +11,17 @@ const boardRouter = require('./routes/board');
 const commentsRouter = require('./routes/comments');
 
 const requestMiddleware = (req, res, next) => {
-  console.log( "Request URL:", req.originalUrl, " - ", 
-  new Date(+new Date() + 3240 * 10000) 
-  .toISOString() 
-  .replace("T", " ") 
-  .replace(/\..*/, "") 
-  ); 
-  next(); 
- };
+  console.log(
+    'Request URL:',
+    req.originalUrl,
+    ' - ',
+    new Date(+new Date() + 3240 * 10000)
+      .toISOString()
+      .replace('T', ' ')
+      .replace(/\..*/, '')
+  );
+  next();
+};
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

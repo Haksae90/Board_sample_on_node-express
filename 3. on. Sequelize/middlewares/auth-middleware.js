@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
-const { Users } = require('../models')
+const { Users } = require('../models');
 
 module.exports = async (req, res, next) => {
   // authoriztion 참조
   const { authorization } = req.headers;
-  const [tokenType, tokenValue] = authorization.split(' '); 
+  const [tokenType, tokenValue] = authorization.split(' ');
 
   if (tokenType !== 'Bearer') {
     res.status(401).send({
@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
   }
   try {
     const { userId } = jwt.verify(tokenValue, process.env.TOKENKEY);
-    const user = await Users.findOne({ where: { userId }})
+    const user = await Users.findOne({ where: { userId } });
     res.locals.userId = user.userId;
     next();
   } catch (error) {

@@ -9,32 +9,40 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Users.hasMany(models.Articles, { foreignKey: 'userId', sourceKey: 'userId' });
-      Users.hasMany(models.Comments, { foreignKey: 'userId', sourceKey: 'userId' });   
+      Users.hasMany(models.Articles, {
+        foreignKey: 'userId',
+        sourceKey: 'userId',
+      });
+      Users.hasMany(models.Comments, {
+        foreignKey: 'userId',
+        sourceKey: 'userId',
+      });
     }
   }
-  Users.init({
-    userId: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      required: true,
+  Users.init(
+    {
+      userId: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        required: true,
+      },
+      nickname: {
+        type: Sequelize.STRING,
+        require: false,
+      },
+      password: {
+        type: Sequelize.STRING,
+        require: false,
+      },
     },
-    nickname: {
-      type: Sequelize.STRING,
-      require: false,
-    },
-    password: {
-      type: Sequelize.STRING,
-      require: false,
-    },
-  }, {
-    sequelize,
-    modelName: 'Users',
-    timestamps: true,
-    createdAt: true,
-    updatedAt: false,
-    
-  });
+    {
+      sequelize,
+      modelName: 'Users',
+      timestamps: true,
+      createdAt: true,
+      updatedAt: false,
+    }
+  );
   return Users;
 };

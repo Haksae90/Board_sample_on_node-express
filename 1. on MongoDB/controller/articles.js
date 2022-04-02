@@ -4,12 +4,12 @@ const Articles = require('../models/articles');
 const getAllArticles = async (req, res) => {
   try {
     const articles = await Articles.find({}).sort('-articleId').exec();
-    res.json({
+    res.status(200).json({
       articles,
     });
   } catch (err) {
-    console.log(err);
-    res.status(400).send({});
+    console.error(err);
+    res.status(400).json({ errorMessage: '잘못된 요청입니다 ' });
   }
 };
 
@@ -20,21 +20,26 @@ const getArticle = async (req, res) => {
     const article = await Articles.find({ articleId });
     res.status(200).render('detail', { article });
   } catch (err) {
-    console.log(err);
-    res.status(400).send({});
+    console.error(err);
+    res.status(400).json({ errorMessage: '잘못된 요청입니다 ' });
   }
 };
 
 // 게시글 작성
 const postArticle = async (req, res) => {
-  const { title, content } = req.body;
-  const nickname = res.locals['user']['nickname'];
-  await Articles.create({
-    nickname,
-    title,
-    content,
-  });
-  res.json({ success: true });
+  try {
+    const { title, content } = req.body;
+    const nickname = res.locals['user']['nickname'];
+    await Articles.create({
+      nickname,
+      title,
+      content,
+    });
+    res.status(201).json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ errorMessage: '잘못된 요청입니다 ' });
+  }
 };
 
 // 게시글 수정 페이지 로드
@@ -44,7 +49,8 @@ const editPage = async (req, res) => {
     const article = await Articles.find({ articleId });
     res.status(200).render('edit', { article });
   } catch (err) {
-    res.status(400).send({});
+    console.error(err);
+    res.status(400).json({ errorMessage: '잘못된 요청입니다 ' });
   }
 };
 
@@ -56,12 +62,13 @@ const checkHost = async (req, res) => {
     const author = article[0].nickname;
     const nickname = res.locals['user']['nickname'];
     if (author === nickname) {
-      res.json({ result: true });
+      res.status(200).json({ result: true });
     } else {
-      res.json({ result: false });
+      res.status(200).json({ result: false });
     }
   } catch (err) {
-    res.status(400).send({});
+    console.error(err);
+    res.status(400).json({ errorMessage: '잘못된 요청입니다 ' });
   }
 };
 
@@ -78,9 +85,10 @@ const editArticle = async (req, res) => {
       });
     }
     await Articles.updateOne({ articleId }, { $set: { title, content } });
-    res.status(200).send({});
+    res.status(200).json({ message: '수정되었습니다' });
   } catch (err) {
-    res.status(400).send({});
+    console.error(err);
+    res.status(400).json({ errorMessage: '잘못된 요청입니다' });
   }
 };
 
@@ -89,9 +97,10 @@ const deleteArticle = async (req, res) => {
   try {
     const { articleId } = req.params;
     await Articles.deleteOne({ articleId });
-    res.status(200).send({});
+    res.status(200).json({ message: '삭제되었습니다' });
   } catch (err) {
-    res.status(400).send({});
+    console.error(err);
+    res.status(400).json({ errorMessage: '잘못된 요청입니다 ' });
   }
 };
 

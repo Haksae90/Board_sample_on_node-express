@@ -1,20 +1,20 @@
 const mysql = require('mysql2/promise');
-require('dotenv').config()
+require('dotenv').config();
 
 async function main() {
-    let connection = await mysql.createConnection({
-        host: process.env.mysql_host,
-        user: process.env.mysql_user,
-        password: process.env.mysql_password,
-    })
+  let connection = await mysql.createConnection({
+    host: process.env.mysql_host,
+    user: process.env.mysql_user,
+    password: process.env.mysql_password,
+  });
 
-    try {
-        await connection.query(`CREATE DATABASE ${process.env.mysql_database}`)
-    } catch(err) {}
+  try {
+    await connection.query(`CREATE DATABASE ${process.env.mysql_database}`);
+  } catch (err) {}
 
-    await connection.query(`USE ${process.env.mysql_database}`)
+  await connection.query(`USE ${process.env.mysql_database}`);
 
-    await connection.query(`
+  await connection.query(`
     CREATE TABLE Users(
         userId INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY(userId),
@@ -22,10 +22,9 @@ async function main() {
         password VARCHAR(255) NOT NULL,
         created_at DATETIME NOT NULL
     )
-    `)
+    `);
 
-    await connection.end()
-
+  await connection.end();
 }
 
-main()
+main();

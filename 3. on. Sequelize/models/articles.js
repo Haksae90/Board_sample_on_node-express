@@ -9,29 +9,38 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Articles.belongsTo(models.Users, { foreignKey: 'userId', sourceKey: 'userId' });
-      Articles.hasMany(models.Comments, { foreignKey: 'articleId', sourceKey: 'articleId' });
+      Articles.belongsTo(models.Users, {
+        foreignKey: 'userId',
+        sourceKey: 'userId',
+      });
+      Articles.hasMany(models.Comments, {
+        foreignKey: 'articleId',
+        sourceKey: 'articleId',
+      });
     }
   }
-  Articles.init({
-    articleId: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      required: true,
+  Articles.init(
+    {
+      articleId: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        required: true,
+      },
+      title: {
+        type: Sequelize.STRING,
+        required: true,
+      },
+      content: {
+        type: Sequelize.STRING,
+        required: true,
+      },
     },
-    title: {
-      type: Sequelize.STRING,
-      required: true,
-    },
-    content: {
-      type: Sequelize.STRING,
-      required: true,
+    {
+      sequelize,
+      modelName: 'Articles',
+      timestamps: true,
     }
-  }, {
-    sequelize,
-    modelName: 'Articles',
-    timestamps: true,
-  });
+  );
   return Articles;
 };

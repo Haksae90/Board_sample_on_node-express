@@ -1,7 +1,7 @@
-const { Users } = require('../models')
+const { Users } = require('../models');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
-const crypto = require("crypto");
+const crypto = require('crypto');
 
 // 회원가입 Joi
 const joinUsersSchema = Joi.object({
@@ -21,8 +21,8 @@ const join = async (req, res) => {
       });
       return;
     }
-    const existUsers = await Users.findOne({ 
-      where: { nickname } 
+    const existUsers = await Users.findOne({
+      where: { nickname },
     });
     if (existUsers) {
       res.status(400).send({
@@ -37,13 +37,13 @@ const join = async (req, res) => {
       return;
     }
     const cryptoPass = crypto
-    .createHash("sha512")
-    .update(password)
-    .digest("base64");
+      .createHash('sha512')
+      .update(password)
+      .digest('base64');
 
-    await Users.create({ 
+    await Users.create({
       nickname,
-      password: cryptoPass
+      password: cryptoPass,
     });
     res.status(201).send({});
   } catch (err) {
@@ -62,12 +62,17 @@ const authUsersSchema = Joi.object({
 
 const login = async (req, res) => {
   try {
-    const { nickname, password } = await authUsersSchema.validateAsync(req.body);
-    const cryptoPass = crypto.createHash('sha512').update(password).digest('base64');
+    const { nickname, password } = await authUsersSchema.validateAsync(
+      req.body
+    );
+    const cryptoPass = crypto
+      .createHash('sha512')
+      .update(password)
+      .digest('base64');
 
-    const user = await Users.findOne({ 
+    const user = await Users.findOne({
       where: { nickname, password: cryptoPass },
-     });
+    });
 
     if (!user) {
       res.status(400).send({
