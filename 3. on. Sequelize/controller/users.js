@@ -62,7 +62,7 @@ const authUsersSchema = Joi.object({
 
 const login = async (req, res) => {
   try {
-    const { nickname, password } = req.body;
+    const { nickname, password } = await authUsersSchema.validateAsync(req.body);
     const cryptoPass = crypto.createHash('sha512').update(password).digest('base64');
 
     const user = await Users.findOne({ 

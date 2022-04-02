@@ -7,7 +7,7 @@ const getAllArticles = async (req, res) => {
     const articles = await Articles.findAll({
       attributes: [ 'articleId', 'title', [sequilize.col('User.nickname'), 'nickname']] ,
       include: [
-        { model: Users, attributes: ["nickname"]}
+        { model: Users, attributes: []}
       ],
       order: [['articleId', 'DESC']],
     });
@@ -30,9 +30,8 @@ const getArticle = async (req, res) => {
       attributes: [ 'articleId', 'title', 'content'],
       include: [
         { model: Users, attributes: ["nickname"]}
-      ],
-      raw: true	
-     });
+      ]
+    });
     res.status(200).render('detail', { article });
   } catch (err) {
     console.log(err);
@@ -57,8 +56,7 @@ const editPage = async (req, res) => {
   try {
     const { articleId } = req.params;
     const article = await Articles.findOne({ 
-      where: { articleId },
-      raw: true	
+      where: { articleId }
     });
     res.status(200).render('edit', { article });
   } catch (err) {
@@ -71,8 +69,7 @@ const checkHost = async (req, res) => {
   try {
     const { articleId } = req.params;
     const article = await Articles.findOne({ 
-      where: { articleId },
-      raw: true
+      where: { articleId }
     });
     const author = article.userId;
     const { userId } = res.locals
@@ -92,8 +89,7 @@ const editArticle = async (req, res) => {
     const { articleId } = req.params;
     const { title, content } = req.body;
     const existsArticle = await Articles.findOne({
-      where: { articleId },
-      raw: true	
+      where: { articleId }
      });
     if (!existsArticle) {
       return res.status(400).json({

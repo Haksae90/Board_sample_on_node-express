@@ -19,7 +19,7 @@ async function main() {
         userId INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY(userId),
         nickname VARCHAR(30) NOT NULL,
-        password VARCHAR(30) NOT NULL,
+        password VARCHAR(255) NOT NULL,
         created_at DATETIME NOT NULL
     )
     `)

@@ -20,10 +20,13 @@ const join = async (req, res) => {
       });
       return;
     }
-    const existUsers = await Users.findOne({ 
-      where: { nickname } 
-    });
-    if (existUsers) {
+    const connection = await req.app.get('pool').getConnection(async conn => conn);
+    const [existUsers] = await connection.query(
+      'SELECT * FROM Users WHERE nickname=? LIMIT 1',
+      [nickname]
+    );
+    const existUser = existUsers[0]
+    if (existUser) {
       res.status(400).send({
         errorMessage: '이미 가입된 닉네임입니다.',
       });
@@ -40,10 +43,11 @@ const join = async (req, res) => {
     .update(password)
     .digest("base64");
 
-    await Users.create({ 
-      nickname,
-      password: cryptoPass
-    });
+    await connection.query(
+      'INSERT INTO Users(nickname, password, created_at) VALUES(?,?,NOW())',
+      [nickname, cryptoPass]
+    );
+    connection.release();
     res.status(201).send({});
   } catch (err) {
     console.log(err);
@@ -61,12 +65,16 @@ const authUsersSchema = Joi.object({
 
 const login = async (req, res) => {
   try {
-    const { nickname, password } = req.body;
+    const { nickname, password } = await authUsersSchema.validateAsync(req.body);
     const cryptoPass = crypto.createHash('sha512').update(password).digest('base64');
 
-    const user = await Users.findOne({ 
-      where: { nickname, password: cryptoPass },
-     });
+    const connection = await req.app.get('pool').getConnection(async conn => conn);
+    const [users] = await connection.query(
+      'SELECT * FROM Users WHERE nickname=? AND password=? LIMIT 1',
+      [nickname, cryptoPass]
+    );
+    const user = users[0]
+    connection.release();
 
     if (!user) {
       res.status(400).send({

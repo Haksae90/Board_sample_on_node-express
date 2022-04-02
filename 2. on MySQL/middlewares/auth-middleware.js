@@ -13,7 +13,13 @@ module.exports = async (req, res, next) => {
   }
   try {
     const { userId } = jwt.verify(tokenValue, process.env.TOKENKEY);
-    const user = await Users.findOne({ where: { userId }})
+    const connection = await req.app.get('pool').getConnection(async conn => conn);
+    const [users] = await connection.query(
+      'SELECT * FROM Users WHERE userId=? LIMIT 1',
+      [userId]
+    );
+    const user = users[0]
+    connection.release();
     res.locals.userId = user.userId;
     next();
   } catch (error) {

@@ -23,8 +23,7 @@ const getCommentsNonAuth = async (req, res) => {
       include: [
         { model: Users, attributes: ["nickname"]}
       ],
-      order: [['commentId', 'DESC']],
-      raw: true	
+      order: [['commentId', 'DESC']]
     });
     res.json({ comments });
   } catch (err) {
@@ -42,14 +41,12 @@ const getCommentsAuth = async (req, res) => {
       include: [
         { model: Users, attributes: ["nickname"]}
       ],
-      order: [['commentId', 'DESC']],
-      raw: true	
+      order: [['commentId', 'DESC']]
     });
     const { userId } = res.locals;
     const userNickname = await Users.findOne({
       where: { userId },
-      attributes: ['nickname'],
-      raw: true
+      attributes: ['nickname']
     });
     res.json({ comments, userNickname });
   } catch (err) {

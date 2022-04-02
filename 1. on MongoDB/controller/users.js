@@ -52,7 +52,7 @@ const authUsersSchema = Joi.object({
 
 const login = async (req, res) => {
   try {
-    const { nickname, password } = req.body;
+    const { nickname, password } = await authUsersSchema.validateAsync(req.body);
     const user = await Users.findOne({ nickname });
 
     if (!user) {

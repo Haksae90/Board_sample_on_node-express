@@ -11,9 +11,14 @@ const boardRouter = require('./routes/board');
 const commentsRouter = require('./routes/comments');
 
 const requestMiddleware = (req, res, next) => {
-  console.log('Request URL:', req.originalUrl, ' - ', new Date());
-  next();
-};
+  console.log( "Request URL:", req.originalUrl, " - ", 
+  new Date(+new Date() + 3240 * 10000) 
+  .toISOString() 
+  .replace("T", " ") 
+  .replace(/\..*/, "") 
+  ); 
+  next(); 
+ };
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
