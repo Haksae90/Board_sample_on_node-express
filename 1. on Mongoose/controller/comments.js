@@ -3,6 +3,7 @@ const Comments = require('../models/comments');
 // 코멘트 작성
 const postComment = async (req, res) => {
   try {
+    const { articleId, comment } = req.body;
     const nickname = res.locals.user.nickname;
     await Comments.create({
       articleId,
