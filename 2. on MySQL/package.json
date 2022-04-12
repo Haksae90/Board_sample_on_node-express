@@ -22,6 +22,9 @@
     "mysql2": "^2.3.3"
   },
   "devDependencies": {
-    "prettier": "^2.5.1"
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.6.2"
   }
 }
