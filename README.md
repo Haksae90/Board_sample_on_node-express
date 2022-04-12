@@ -1,23 +1,114 @@
-# 게시판 만들기 샘플 on node&express
+# 초보자를 위한 게시판 만들기 샘플 on Node.js & Express
 
 Node.js & Express을 사용하여 게시판을 만들었습니다.<br>
-연습할겸 저와 비슷한 초보자 분들을 위해, DB는 Mongoose(MongoDB), SQL, Sequelize를 사용하였습니다.<br>
-약간의 도움이나마 되었으면 좋겠습니다.
+초보자 분들을 위해, DB는 Mongoose(MongoDB), SQL, Sequelize를 사용한 게시판 샘플을 만들어봤습니다..<br>
+약간의 도움이나마 되었으면 좋겠습니다. (향후 야금야금 여러 기술들을 추가해볼 생각입니다)
 
-🔨 Tech Stack
-- Node.js
-- Express
-- MongoDB & Mongoose
-- SQL
-- Sequelize
-- cors
-- dotenv
-- joi
-- jsonwebtoken
-- prettier
+#
+
+## 🔨 Tech Stack (1-3번 폴더에서 사용할 기술 스택이 다를 수 있습니다)
+| Tech | Description | Version |
+|--|--|--|
+|express |웹 프레임워크 |4.17.2 |
+|mongoose|MongoDB ODM |6.1.8 |
+|mongoose-sequence|mongoose lib |5.3.1 |
+|mysql2|MySQL |6.1.8 |
+|sequelize|MySQL ORM |6.17.0 |
+|sequelize-cli|sequelize-cli |6.4.1 |
+|ejs |템플릿 엔진 |3.1.6 | 
+|bcrypt |비밀번호 암호화 |5.0.1 |
+|joi |유효성 검사 |2.8.5 |
+|cors |교차 리소스 공유 |2.8.5 |
+|dotenv |환경변수 관리 |16.0.0 |
+|jsonwebtoken |서명 암호화 |8.5.1 |
+|prettier |클린 코드 |2.6.1 |
+|eslint |클린 코드 |8.13.0  |
+|eslint-config-prettier,<br> eslint-plugin-prettier |eslint, prettier 충돌방지 |8.5.0, 4.0.0 |
+
+#
+
+## ⚙️ AWS RDS 사용하고 싶으신 분 참고
+- 혹시 RDS를 사용하고 싶으신 분이 계시다면, 아래의 링크를 참고하여 도전해보세요-! 순서대로 최대한 자세하게 적어놨습니다 ☺️
+- RDS란 무엇인가 (https://haksae.tistory.com/208)
+- RDS 셋팅 및 EC2와 연동하기 (https://haksae.tistory.com/207)
+- Workbench로 RDS 연결하기 (https://haksae.tistory.com/209)
+
+#
+
+## 📋 Installation
+### 프로젝트 실행을 위해 하단의 상세 설명을 참고해 주세요.
+
+1. 프로젝트 클론
+
+```console
+$ git clone https://github.com/Haksae90/Board_sample_on_node-express.git
+```
+
+2. 패키지 설치 (1-3번 중에 원하는 환경을 선택하세요)
+
+```console
+$ cd Board_sample_on_node-express
+$ cd 1.\ on\ Mongoose
+$ npm install
+```
 
 
-## 📋서비스 관련
+3. 환경변수 설정
+
+1) .env 설정
+
+```text
+// 1-3번 폴더 안에 .env 파일 생성 후 아래의 내용을 기입 후 저장해주세요.
+
+1. on Mongoose
+PORT='원하는 포트 설정'
+TOKENKEY='원하는 JWT 토큰 값 설정'
+MONGO_URL='원하는 몽고 DB URL 설정' ex) 'mongodb://localhost:27017/board_project'
+
+2. on MySQL
+PORT='원하는 포트 설정'
+TOKENKEY='원하는 JWT 토큰 값 설정'
+mysql_host='프로젝트 환경의 HOST 주소'
+mysql_user='프로젝트 환경의 MySQL ID'
+mysql_password='프로젝트 환경의 MySQL 패스워드'
+mysql_database='연결할 DB명'
+
+3. on Sequelize
+PORT='원하는 포트 설정'
+TOKENKEY='원하는 JWT 토큰 값 설정'
+
+```
+
+2) Sequelize config 설정
+
+```text
+// sequelize는 추가로 config 설정을 해주셔야합니다.
+
+sequelize cli 설치
+$npm i sequelize sequelize-cli sqlite3
+
+sequelize CLI를 사용하여 config, 테이블 생성 및 마이그레이션, 테이터 추가
+$npx sequelize init
+
+// config 파일을 생성됐다면 config를 설정해주세요. 메인 디렉토리에서 config 폴더 안에, config.json 파일을 아래와 같이 셋팅해주시면 됩니다
+{
+  "development": {
+    "username": "프로젝트 환경의 MySQL ID",
+    "password": "프로젝트 환경의 Password",
+    "database": "연결할 DB명",
+    "host": "프로젝트 환경의 HOST 주소",
+    "dialect": "mysql"
+  },
+
+// 서버를 돌리기 전에 sequelize로 DB 생성하는 것도 잊지마셔요
+데이터베이스 생성
+$npx sequelize db:migrate
+
+```
+
+#
+
+## 📋 서비스 관련
 
 1. 회원 가입 페이지
     - 회원가입 버튼을 클릭하기
