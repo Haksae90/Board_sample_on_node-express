@@ -82,7 +82,7 @@
         if(!localStorage.length) {
             $.ajax({
             type: "GET",
-            url: "/comments/checkHost/notusers/<%=article.articleId%>",
+            url: "/comments/notHost/<%=article.articleId%>",
             data: {},
             success: function (response) {
                 let comments = response["comments"];
@@ -102,7 +102,7 @@
         } else {
         $.ajax({
             type: "GET",
-            url: "/comments/checkHost/<%=article.articleId%>",
+            url: "/comments/host/<%=article.articleId%>",
             headers: {
                 authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -137,7 +137,7 @@
 
     // 수정 페이지로 이동
     function edit() {
-        window.location.replace("/board/edit/<%=article.articleId%>")
+        window.location.replace("/board/<%=article.articleId%>")
     };
 
     // 홈페이지로 이동
@@ -158,7 +158,7 @@
         }
         $.ajax({
             type: "POST",
-            url: "/comments/post",
+            url: "/comments",
             headers: {
                 authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -183,7 +183,7 @@
         console.log(comment, Id)
         $.ajax({
             type: "PUT",
-            url: "/comments/edit/" + Id,
+            url: "/comments/" + Id,
             data: { comment },
             success: function (response) {
                 alert("댓글이 수정되었습니다.")
@@ -198,7 +198,7 @@
         if (deleteConfirm === true) {
             $.ajax({
                 type: "DELETE",
-                url: "/comments/delete/" + commentId,
+                url: "/comments/" + commentId,
                 data: {},
                 success: function (response) {
                     alert("댓글이 삭제되었습니다.");

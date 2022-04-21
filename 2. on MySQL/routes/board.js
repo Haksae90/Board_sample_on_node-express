@@ -13,7 +13,7 @@ const {
 } = require('../controller/articles');
 
 // 글쓰기 페이지 연결
-router.get('/post', (req, res) => {
+router.get('/posts', (req, res) => {
   res.render('post');
 });
 
@@ -24,18 +24,18 @@ router.get('/articles', getAllArticles);
 router.get('/articles/:articleId', getArticle);
 
 // 게시글 작성
-router.post('/post', authMiddleware, postArticle);
+router.post('/posts', authMiddleware, postArticle);
 
 // 게시글 수정 페이지 로드
-router.get('/edit/:articleId', editPage);
+router.get('/:articleId', editPage);
 
 // 게시글 작성자 확인
 router.get('/checkHost/:articleId', authMiddleware, checkHost);
 
 // 게시글 수정
-router.put('/edit/:articleId', editArticle);
+router.put('/:articleId', editArticle);
 
 // 게시글 삭제
-router.delete('/delete/:articleId', deleteArticle);
+router.delete('/:articleId', deleteArticle);
 
 module.exports = router;
