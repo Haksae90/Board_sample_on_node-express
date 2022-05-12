@@ -17,6 +17,7 @@ module.exports = {
           model: 'Articles',
           key: 'articleId',
         },
+        onDelete: 'CASCADE'
       },
       commentId: {
         allowNull: false,
